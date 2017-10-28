@@ -23,6 +23,8 @@ public Q_SLOTS:
     Q_INVOKABLE void setUsername(QString username);
     Q_INVOKABLE void setPassword(QString password);
     Q_INVOKABLE QString getUsernameId();
+    Q_INVOKABLE void setProfilePic(QString userpic);
+    Q_INVOKABLE QString getProfilePic();
 //End
 
     Q_INVOKABLE void postImage(QString path, QString caption, QString upload_id = "");

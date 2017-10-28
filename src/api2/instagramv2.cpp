@@ -482,3 +482,21 @@ QNetworkAccessManager *Instagramv2::networkAccessManager() const
     Q_D(const Instagramv2);
     return d->m_manager;
 }
+
+
+void Instagramv2::setProfilePic(QString userpic){
+
+    Q_D(Instagramv2);
+    if (d->m_profile_pic == "") {
+        d->m_profile_pic = userpic;
+    }
+}
+
+QString Instagramv2::getProfilePic(){
+
+    Q_D(const Instagramv2);
+    if (d->m_profile_pic != "") {
+        return d->m_profile_pic;
+    }
+    else return "";
+}

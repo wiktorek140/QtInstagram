@@ -44,7 +44,7 @@ private:
     QString m_csrftoken=m_token;
     QString m_rank_token;
     QString m_IGDataPath;
-
+    QString m_profile_pic;
     QString m_caption;
     QString m_image_path;
 
