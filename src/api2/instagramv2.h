@@ -60,6 +60,7 @@ public Q_SLOTS:
 
 //Hashtag
     Q_INVOKABLE void getTagFeed(QString tag, QString max_id="");
+    Q_INVOKABLE void searchTags(QString tag);
 
 //Media
     Q_INVOKABLE void getInfoMedia(QString mediaId);
@@ -144,6 +145,7 @@ Q_SIGNALS:
 
 //Hashtag
     void tagFeedDataReady(QVariant answer);
+    void searchTagsDataReady(QVariant answer);
 
 //Media
     void likeDataReady(QVariant answer);
