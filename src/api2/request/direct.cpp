@@ -9,8 +9,8 @@ void Instagramv2::getInbox(QString cursorId)
     InstagramRequestv2 *getInboxRequest =
         d->request("direct_v2/inbox/?"
                    "persistentBadging=true&"
-                   "use_unified_inbox=true"+
-                   (cursorId.length()>0 ? "&cursor="+cursorId : "")
+                   "use_unified_inbox=true" +
+                   (cursorId.length()>0 ? "&cursor=" + cursorId : "")
                    , NULL);
     QObject::connect(getInboxRequest,SIGNAL(replyStringReady(QVariant)), this, SIGNAL(inboxDataReady(QVariant)));
 }

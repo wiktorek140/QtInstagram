@@ -130,16 +130,16 @@ Instagramv2::~Instagramv2()
 {
 }
 
-void Instagramv2::login(bool forse)
+void Instagramv2::login(bool force)
 {
     Q_D(Instagramv2);
 
-    if(!d->m_isLoggedIn or forse)
+    if(!d->m_isLoggedIn || force)
     {
         d->setUser();
         InstagramRequestv2 *loginRequest =
             d->request("si/fetch_headers/?challenge_type=signup&guid="+d->m_uuid,NULL);
-        QObject::connect(loginRequest,&InstagramRequestv2::replyStringReady,d,&Instagramv2Private::doLogin);
+        QObject::connect(loginRequest, &InstagramRequestv2::replyStringReady, d, &Instagramv2Private::doLogin);
     }
 }
 
@@ -155,8 +155,14 @@ void Instagramv2::logout()
     f_userId.remove();
     f_token.remove();
 
-    InstagramRequestv2 *looutRequest = d->request("accounts/logout/",NULL);
-    QObject::connect(looutRequest,&InstagramRequestv2::replyStringReady,this,&Instagramv2::doLogout);
+    InstagramRequestv2 *logoutRequest = d->request("accounts/logout/"
+                                                  "?_csrftoken=" + d->m_csrftoken +
+                                                  "&guid=" + d->m_uuid +
+                                                  "&device_id=" + d->m_device_id +
+                                                  "&_uuid" + d->m_uuid
+                                                  , NULL);
+
+    QObject::connect(logoutRequest, &InstagramRequestv2::replyStringReady, this, &Instagramv2::doLogout);
 }
 
 void Instagramv2::setUsername(QString username)
@@ -418,25 +424,36 @@ void Instagramv2::rotateImg(QString filename, qreal deg)
     imgFile.close();
 }
 
-void Instagramv2::cropImg(QString filename, bool squared)
+void Instagramv2::cropImg(QString filename, bool squared, bool isRotated)
 {
 
     QImage image(filename);
-    QTransform rot;
-    rot.rotate(90);
-    image = image.transformed(rot);
+    if(!isRotated) {
+        QTransform rot;
+        rot.rotate(90);
+        image = image.transformed(rot);
+    }
 
     int min_size = qMin(image.width(),image.height());
     int max_size = qMax(image.width(),image.height());
 
     if(squared)
     {
-        image = image.copy(0,(max_size-min_size)/2,min_size,min_size);
+        if(isRotated) {
+            image = image.copy(max_size / 4, 0, min_size, min_size);
+        } else
+            image = image.copy(0,(max_size-min_size) / 2, min_size, min_size);
     }
     else
     {
-        int size54 = min_size*5/4;
-        image = image.copy(0,(max_size-size54)/2,min_size,size54);
+        if(isRotated) {
+            int size54 = max_size * (5.0/4.0);
+            image = image.copy(0, max_size / 4, size54,min_size);
+        }
+        else {
+            int size54 = min_size * 5/4;
+            image = image.copy(0,(max_size-size54)/2,min_size,size54);
+        }
     }
 
     QFile imgFile(filename);

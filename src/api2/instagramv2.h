@@ -36,7 +36,7 @@ public Q_SLOTS:
 
 //Image manipulate
     Q_INVOKABLE void rotateImg(QString filename, qreal deg);
-    Q_INVOKABLE void cropImg(QString filename, bool squared);
+    Q_INVOKABLE void cropImg(QString filename, bool squared, bool isRotated = true);
     Q_INVOKABLE void cropImg(QString in_filename, QString out_filename, int topSpace, bool squared);
 
 //Account
@@ -50,13 +50,13 @@ public Q_SLOTS:
     Q_INVOKABLE void createAccount(QString username, QString password, QString email);
 
 //Direct
-    Q_INVOKABLE void getInbox(QString cursorId="");
+    Q_INVOKABLE void getInbox(QString cursorId = "");
     Q_INVOKABLE void getDirectThread(QString threadId, QString cursorId="");
     Q_INVOKABLE void getPendingInbox();
     Q_INVOKABLE void getRecentRecipients();
 
 //Discover
-    Q_INVOKABLE void getExploreFeed(QString max_id="", QString isPrefetch="false");
+    Q_INVOKABLE void getExploreFeed(QString max_id="", QString isPrefetch = "false");
 
 //Hashtag
     Q_INVOKABLE void getTagFeed(QString tag, QString max_id="");
