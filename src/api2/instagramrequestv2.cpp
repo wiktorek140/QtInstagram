@@ -41,9 +41,11 @@ InstagramRequestv2 *Instagramv2Private::fileRequest(QString endpoint, QString bo
     return new InstagramRequestv2(mReply, this);
 }
 
-InstagramRequestv2 *Instagramv2Private::request(QString endpoint, QByteArray post)
+InstagramRequestv2 *Instagramv2Private::request(QString endpoint, QByteArray post, bool apiV2, bool isGet)
 {
-    QUrl url(Constants::apiUrl()+endpoint);
+    QString api_url = apiV2 ? Constants::apiUrl(): Constants::apiUrl();
+
+    QUrl url(api_url + endpoint);
     QNetworkRequest request(url);
 
     request.setRawHeader("Connection","close");
@@ -52,8 +54,15 @@ InstagramRequestv2 *Instagramv2Private::request(QString endpoint, QByteArray pos
     request.setRawHeader("Cookie2","$Version=1");
     request.setRawHeader("Accept-Language","en-US");
     request.setRawHeader("User-Agent",Constants::userAgent());
+    request.setRawHeader("X-IG-Capabilities", "3brTvw==");
+    request.setRawHeader("X-IG-Connection-Type","WIFI");
 
-    QNetworkReply *mReply = this->m_manager->post(request,post);
+    QNetworkReply *mReply;
+    if (isGet) {
+        mReply = this->m_manager->get(request);
+    } else {
+        mReply = this->m_manager->post(request, post);
+    }
 
     return new InstagramRequestv2(mReply, this);
 }
