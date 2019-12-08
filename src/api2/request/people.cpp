@@ -19,7 +19,7 @@ void Instagramv2::getInfoById(QString userId)
     InstagramRequestv2 *getInfoByIdRequest =
         d->request("users/"+userId+"/info/"
                    "?device_id="+d->m_device_id
-                   ,NULL);
+                   ,NULL, false, true);
     QObject::connect(getInfoByIdRequest,SIGNAL(replyStringReady(QVariant)),this,SIGNAL(infoByIdDataReady(QVariant)));
 }
 
