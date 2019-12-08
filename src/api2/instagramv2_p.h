@@ -22,7 +22,7 @@ public:
     void loadCookies();
 
     InstagramRequestv2 *fileRequest(QString endpoint, QString boundary, QByteArray data);
-    InstagramRequestv2 *request(QString endpoint, QByteArray post);
+    InstagramRequestv2 *request(QString endpoint, QByteArray post, bool apiV2 = false, isGet = false);
 
 private Q_SLOTS:
     void setUser();
